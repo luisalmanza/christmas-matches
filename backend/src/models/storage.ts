@@ -1,5 +1,6 @@
-import { Schema, model } from "mongoose";
-import mongooseDelete from "mongoose-delete";
+import { Model, Schema, model } from "mongoose";
+import mongooseDelete, { SoftDeleteModel } from "mongoose-delete";
+import StorageInterface from "../interfaces/storage.interface";
 
 const StorageSchema = new Schema<any>(
     {
@@ -17,6 +18,7 @@ const StorageSchema = new Schema<any>(
 );
 
 StorageSchema.plugin(mongooseDelete, { overrideMethods: "all" });
-const StorageModel = model("storage", StorageSchema);
+interface StorageModel extends Model<StorageInterface>, SoftDeleteModel<StorageInterface> {}
+const StorageModel = model<StorageInterface, StorageModel>("storage", StorageSchema);
 
 export default StorageModel;

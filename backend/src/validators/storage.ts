@@ -7,6 +7,6 @@ const validatorGetItem = [
     (req: Request, res: Response, next: NextFunction) => {
         return validateResults(req, res, next);
     }
-]
+];
 
 export default validatorGetItem;

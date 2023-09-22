@@ -2,6 +2,7 @@ import models from "../models";
 import { Request, Response } from "express";
 import { matchedData } from "express-validator";
 import StorageInterface from "../interfaces/storage.interface";
+import handleHttpError from "../utils/handleError";
 
 const PUBLIC_URL = process.env.PUBLIC_URL;
 const MEDIA_PATH = `${__dirname}/../storage`;
@@ -11,8 +12,7 @@ async function getItems(req: Request, res: Response): Promise<void> {
         const data = await models.storageModel.find({});
         res.send({ data });
     } catch (error) {
-        res.status(500);
-        res.send({ error: "Error getting items from storage" });
+        handleHttpError(res, "Error getting items from storage", 500);
     }
 }
 
@@ -22,8 +22,7 @@ async function getItem(req: Request, res: Response): Promise<void> {
         const data = await models.storageModel.findById(id);
         res.send(data);
     } catch (error) {
-        res.status(403);
-        res.send({ error: "Error getting an item from storage" });
+        handleHttpError(res, "Error getting item from storage");
     }
 }
 
@@ -39,8 +38,7 @@ async function createItem(req: Request, res: Response): Promise<void> {
         res.status(201);
         res.send({ data });
     } catch (error) {
-        res.status(403);
-        res.send({ error: "Error creating an item on storage" });
+        handleHttpError(res, "Error creating item on storage");
     }
 }
 
@@ -49,7 +47,7 @@ async function deleteItem(req: Request, res: Response): Promise<void> {
         const { id } = matchedData(req);
         const dataFile: StorageInterface | null = await models.storageModel.findById(id);
 
-        const deleteResponse = await models.storageModel.deleteOne({ _id: id });
+        const deleteResponse = await models.storageModel.delete({ _id: id });
 
         const filename = dataFile?.filename;
 
@@ -62,8 +60,7 @@ async function deleteItem(req: Request, res: Response): Promise<void> {
 
         res.send({ data });
     } catch (error) {
-        res.status(403);
-        res.send({ error: "Error deleting an item" });
+        handleHttpError(res, "Error deleting item");
     }
 }
 

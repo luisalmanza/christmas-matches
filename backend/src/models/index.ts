@@ -1,8 +1,8 @@
-import playersModel from './players';
+import playerModel from './player';
 import storageModel from './storage';
 
 const models = {
-    playersModel,
+    playerModel,
     storageModel
 }
 
