@@ -5,9 +5,89 @@ import uploadMiddleware from "../utils/handleStorage";
 
 const router: Router = express.Router();
 
+/**
+ * @openapi
+ * /storage:
+ *      get:
+ *          tags:
+ *              - storage
+ *          summary: Photos list
+ *          description: Get all photos from storage.
+ *          responses:
+ *              200:
+ *                  description: Data successfully retrieved.
+ */
 router.get("", getItems);
+
+/**
+ * @openapi
+ * /storage/{id}:
+ *      get:
+ *          tags:
+ *              - storage
+ *          summary: Photo details
+ *          description: Get details from a photo.
+ *          parameters:
+ *              - name: id
+ *                in: path
+ *                description: Photo ID
+ *                required: true
+ *                schema:
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: Data successfully retrieved.
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/components/schemas/storage'
+ */
 router.get("/:id", validatorGetItem, getItem);
+
+/**
+ * Upload a photo
+ * @openapi
+ * /storage:
+ *      post:
+ *          tags:
+ *              - storage
+ *          summary: Upload a photo
+ *          description: Upload a photo on storage
+ *          responses:
+ *              201:
+ *                  description: Photo successfully uploaded.
+ *          requestBody:
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              myfile:
+ *                                  type: string
+ *                                  format: binary
+ */
 router.post("/", uploadMiddleware.single("myfile"), createItem);
+
+/**
+ * Delete a phoyo
+ * @openapi
+ * /storage/{id}:
+ *      delete:
+ *          tags:
+ *              - storage
+ *          summary: Delete a photo
+ *          description: Delete a photo from storage
+ *          parameters:
+ *              - name: id
+ *                in: path
+ *                description: Photo ID
+ *                required: true
+ *                schema:
+ *                  type: string
+ *          responses:
+ *              200:
+ *                  description: Photo successfully deleted
+ */
 router.delete("/:id", validatorGetItem, deleteItem);
 
 export { router };
