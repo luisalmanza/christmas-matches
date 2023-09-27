@@ -20,7 +20,7 @@ async function getItem(req: Request, res: Response): Promise<void> {
     try {
         const { id } = matchedData(req);
         const data = await models.storageModel.findById(id);
-        res.send(data);
+        res.send({ data });
     } catch (error) {
         handleHttpError(res, "Error getting item from storage");
     }
@@ -47,7 +47,7 @@ async function deleteItem(req: Request, res: Response): Promise<void> {
         const { id } = matchedData(req);
         const dataFile: StorageInterface | null = await models.storageModel.findById(id);
 
-        const deleteResponse = await models.storageModel.delete({ _id: id });
+        const deleteResponse: any = await models.storageModel.delete({ _id: id });
 
         const filename = dataFile?.filename;
 
@@ -55,7 +55,7 @@ async function deleteItem(req: Request, res: Response): Promise<void> {
 
         const data = {
             filePath,
-            deleted: deleteResponse.deletedCount
+            deleted: deleteResponse.matchedCount
         }
 
         res.send({ data });

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./src/app.ts",
-    "test": "cross-env NODE_ENV=test jest --coverage --detectOpenHandles --silent --runInBand 2>test-output.log",
+    "test": "cross-env NODE_ENV=test jest --coverage --detectOpenHandles --silent --runInBand",
     "test:watch": "cross-env NODE_ENV=test jest --coverage --detectOpenHandles --watch --silent --runInBand",
     "build": "tsc --build ."
   },
@@ -33,6 +33,7 @@
     "@types/jsonwebtoken": "^9.0.3",
     "@types/mongoose-delete": "^1.0.0",
     "@types/multer": "^1.4.7",
+    "@types/supertest": "^2.0.13",
     "@types/swagger-jsdoc": "^6.0.1",
     "@types/swagger-ui-express": "^4.1.3",
     "cross-env": "^7.0.3",

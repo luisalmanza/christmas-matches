@@ -37,10 +37,10 @@ async function createItem(req: Request, res: Response): Promise<void> {
 async function deleteItem(req: Request, res: Response): Promise<void> {
     try {
         const { id } = matchedData(req);
-        const deleteResponse = await models.playerModel.delete({ _id: id });
+        const deleteResponse: any = await models.playerModel.delete({ _id: id });
 
         const data = {
-            deleted: deleteResponse.deletedCount
+            deleted: deleteResponse.matchedCount
         };
 
         res.send({ data });

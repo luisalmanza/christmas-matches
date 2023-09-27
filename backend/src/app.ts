@@ -7,6 +7,8 @@ import EventEmitter from 'events';
 import swaggerUI from "swagger-ui-express";
 import openApiConfiguration from "./docs/swagger";
 
+const NODE_ENV = process.env.NODE_ENV || "development";
+
 const myEmitter = new EventEmitter();
 myEmitter.setMaxListeners(15);
 
@@ -22,10 +24,14 @@ app.use("/documentation", swaggerUI.serve, swaggerUI.setup(openApiConfiguration)
 
 app.use("/api", routes);
 
-app.listen(port, () => {
-    console.log(`Ready in the port ${port}`);
-});
+if (NODE_ENV !== "test") {
+    app.listen(port, () => {
+        console.log(`Ready in the port ${port}`);
+    });
 
-dbConnect().then(() => {
-    console.log("Successful connection");
-});
+    dbConnect().then(() => {
+        console.log("Successful connection");
+    });
+}
+
+export default app;

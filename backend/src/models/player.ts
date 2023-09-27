@@ -21,7 +21,7 @@ const PlayerSchema = new Schema<PlayerInterface>(
 );
 
 PlayerSchema.static("findAllData", function findAllData() {
-    const joinData = this.aggregate([
+    const joinData: any = this.aggregate([
         {
             $lookup: {
                 from: "storages",
@@ -39,7 +39,7 @@ PlayerSchema.static("findAllData", function findAllData() {
 });
 
 PlayerSchema.static("findOneItem", function findOneItem(id) {
-    const joinData = this.aggregate([
+    const joinData: any = this.aggregate([
         {
             $match: {
                 _id: new mongoose.Types.ObjectId(id)

@@ -16,6 +16,8 @@ const router: Router = express.Router();
  *          responses:
  *              200:
  *                  description: Data successfully retrieved.
+ *              403:
+ *                  description: Validation error.
  */
 router.get("", getItems);
 
@@ -41,6 +43,8 @@ router.get("", getItems);
  *                      application/json:
  *                          schema:
  *                              $ref: '#/components/schemas/storage'
+ *              403:
+ *                  description: Validation error.
  */
 router.get("/:id", validatorGetItem, getItem);
 
@@ -56,6 +60,8 @@ router.get("/:id", validatorGetItem, getItem);
  *          responses:
  *              201:
  *                  description: Photo successfully uploaded.
+ *              403:
+ *                  description: Validation error.
  *          requestBody:
  *              content:
  *                  multipart/form-data:
@@ -87,6 +93,8 @@ router.post("/", uploadMiddleware.single("myfile"), createItem);
  *          responses:
  *              200:
  *                  description: Photo successfully deleted
+ *              403:
+ *                  description: Validation error.
  */
 router.delete("/:id", validatorGetItem, deleteItem);
 
