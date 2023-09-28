@@ -4,12 +4,12 @@ import { matchedData } from "express-validator";
 import StorageInterface from "../interfaces/storage.interface";
 import handleHttpError from "../utils/handleError";
 
-const PUBLIC_URL = process.env.PUBLIC_URL;
+const PUBLIC_URL = process.env["PUBLIC_URL"];
 const MEDIA_PATH = `${__dirname}/../storage`;
 
 async function getItems(req: Request, res: Response): Promise<void> {
     try {
-        const data = await models.storageModel.find({});
+        const data = await models.storageModel.find({}).select("-deleted");
         res.send({ data });
     } catch (error) {
         handleHttpError(res, "Error getting items from storage", 500);

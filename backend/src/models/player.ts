@@ -32,6 +32,21 @@ PlayerSchema.static("findAllData", function findAllData() {
         },
         {
             $unwind: "$photo"
+        },
+        {
+            $project: {
+                _id: 1,
+                name: 1,
+                nickname: 1,
+                mediaId: 1,
+                createdAt: 1,
+                updatedAt: 1,
+                "photo._id": 1,
+                "photo.url": 1,
+                "photo.filename": 1,
+                "photo.createdAt": 1,
+                "photo.updatedAt": 1
+            }
         }
     ]);
 

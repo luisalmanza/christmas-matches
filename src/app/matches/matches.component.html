@@ -1,0 +1,60 @@
+<div class="d-flex justify-content-center">
+    <button type="button" class="btn btn-outline-primary btn-lg mt-5" (click)="newGame()">Start new game</button>
+</div>
+
+<div class="container mt-5 mb-5">
+    <div class="round">
+        <h2>{{roundMessage}}</h2>
+    </div>
+
+    <div *ngFor="let match of matches; let matchIndex = index" class="col-md-8 offset-md-2">
+        <div class="card mt-4">
+            <div class="card-header">
+                {{match[0].name}} vs {{match[1].name}}
+                <ng-container *ngIf="match[2]">vs {{match[2].name}}</ng-container>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-center align-items-center">
+                    <img class="picture rounded-circle" [src]="match[0].photo.url" alt="Player picture"
+                        (click)="win(matchIndex, 0)" [ngClass]="{'looser': match[0].looser}">
+                    <img class="versus" src="../../assets/vs.png" alt="">
+                    <img class="picture rounded-circle" [src]="match[1].photo.url" alt="Player picture"
+                        (click)="win(matchIndex, 1)" [ngClass]="{'looser': match[1].looser}">
+                    <ng-container *ngIf="match[2]">
+                        <img class="versus" src="../../assets/vs.png" alt="">
+                        <img class="picture rounded-circle" [src]="match[2].photo.url" alt="Player picture"
+                            (click)="win(matchIndex, 2)" [ngClass]="{'looser': match[2].looser}">
+                    </ng-container>
+                </div>
+                <div class="mt-3">Click on the photo of the winning player</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <button *ngIf="!isLastRound" type="button" class="btn btn-primary mt-3"
+            [disabled]="playedCounter < matches.length" (click)="nextRound()">
+            Next round
+        </button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="winnerModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5">Congrats!</h1>
+            </div>
+            <div class="modal-body">
+                <span>The winner is <b>{{winnerPlayer?.name}}</b></span>
+                <br>
+                <img class="picture rounded-circle" [src]="winnerPlayer?.photo?.url" alt="Player picture">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" (click)="newGame()">Start new game</button>
+            </div>
+        </div>
+    </div>
+</div>
