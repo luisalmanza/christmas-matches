@@ -1,10 +1,13 @@
-<div class="d-flex justify-content-center">
-    <button type="button" class="btn btn-outline-primary btn-lg mt-5" (click)="newGame()">Start new game</button>
-</div>
 
-<div class="container mt-5 mb-5">
-    <div class="round">
-        <h2>{{roundMessage}}</h2>
+
+<div class="container pt-5 mb-5">
+
+    <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-outline-light btn-lg mt-5" (click)="newGame()">Start new game</button>
+    </div>
+
+    <div class="round mt-5">
+        <span class="font-monospace">{{roundMessage}}</span>
     </div>
 
     <div *ngFor="let match of matches; let matchIndex = index" class="col-md-8 offset-md-2">
@@ -31,8 +34,8 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-center">
-        <button *ngIf="!isLastRound" type="button" class="btn btn-primary mt-3"
+    <div class="d-grid gap-2 col-4 mx-auto mt-5">
+        <button *ngIf="!isLastRound" type="button" class="btn btn-light"
             [disabled]="playedCounter < matches.length" (click)="nextRound()">
             Next round
         </button>
