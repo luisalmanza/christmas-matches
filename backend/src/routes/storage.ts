@@ -68,11 +68,11 @@ router.get("/:id", validatorGetItem, getItem);
  *                      schema:
  *                          type: object
  *                          properties:
- *                              myfile:
+ *                              file:
  *                                  type: string
  *                                  format: binary
  */
-router.post("/", uploadMiddleware.single("myfile"), createItem);
+router.post("/", uploadMiddleware.single("file"), createItem);
 
 /**
  * Delete a phoyo

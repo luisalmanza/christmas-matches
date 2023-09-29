@@ -19,7 +19,7 @@ describe("[STORAGE] Photos test", () => {
     test("Upload a file", async () => {
         const response: Response = await request(app)
             .post("/api/storage")
-            .attach("myfile", filePath);
+            .attach("file", filePath);
 
         const { body } = response;
         expect(response.statusCode).toEqual(201);
