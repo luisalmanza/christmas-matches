@@ -17,7 +17,7 @@ async function getItem(req: Request, res: Response): Promise<void> {
     try {
         const { id } = matchedData(req);
         const data = await models.playerModel.findOneItem(id);
-        res.send({ data });
+        res.send({ data: data[0] });
     } catch (error) {
         handleHttpError(res, "Error getting player");
     }

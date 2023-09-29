@@ -17,7 +17,7 @@
             <a class="nav-link" [ngClass]="{'active': route === '/'}" aria-current="page" routerLink="">Game</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" [ngClass]="{'active': route === '/players' || route === '/player-create'}"
+            <a class="nav-link" [ngClass]="{'active': route.includes('player')}"
               routerLink="/players">Players</a>
           </li>
         </ul>

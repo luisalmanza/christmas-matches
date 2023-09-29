@@ -7,7 +7,8 @@ import { PlayerCreateComponent } from './players/player-create/player-create.com
 const routes: Routes = [
   { path: "", component: MatchesComponent },
   { path: "players", component: PlayersComponent },
-  { path: "player-create", component: PlayerCreateComponent }
+  { path: "player-create", component: PlayerCreateComponent },
+  { path: "player-edit/:playerId", component: PlayerCreateComponent }
 ];
 
 @NgModule({

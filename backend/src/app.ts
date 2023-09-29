@@ -16,7 +16,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static("storage"));
+app.use(express.static(__dirname + "/storage"));
 
 const port: string | number = process.env.PORT || 3000;
 

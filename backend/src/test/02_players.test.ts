@@ -74,10 +74,10 @@ describe("[PLAYERS] Players test", () => {
         const { body } = response;
         expect(response.statusCode).toEqual(200);
         expect(body).toHaveProperty("data");
-        expect(body).toHaveProperty("data[0].name");
-        expect(body).toHaveProperty("data[0].nickname");
-        expect(body).toHaveProperty("data[0].mediaId");
-        expect(body).toHaveProperty("data[0].photo");
+        expect(body).toHaveProperty("data.name");
+        expect(body).toHaveProperty("data.nickname");
+        expect(body).toHaveProperty("data.mediaId");
+        expect(body).toHaveProperty("data.photo");
     });
 
     test("[Fail] Get one player", async () => {

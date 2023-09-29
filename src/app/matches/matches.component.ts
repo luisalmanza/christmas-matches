@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import PlayerInterface from './interfaces/player.interface';
+import PlayerInterface from '../interfaces/player.interface';
 import * as bootstrap from 'bootstrap';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-matches',
@@ -8,14 +9,16 @@ import * as bootstrap from 'bootstrap';
   styleUrls: ['./matches.component.scss']
 })
 export class MatchesComponent {
-  players: PlayerInterface[] = [];
   matches: PlayerInterface[][] = [];
   winnerPlayer: PlayerInterface | undefined;
   playedCounter: number = 0;
-  round: number = 0;
   roundMessage: string = "";
   isLastRound: boolean = false;
-  winnerModal: any;
+  players: PlayerInterface[] = [];
+  private round: number = 0;
+  private winnerModal: any;
+
+  constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.winnerModal = new bootstrap.Modal('#winnerModal');
@@ -25,258 +28,24 @@ export class MatchesComponent {
   newGame(): void {
     this.matches = [];
     this.playedCounter = 0;
-    this.getPlayers();
-    this.shufflePlayers(this.players);
-    this.buildMatches();
     this.isLastRound = false;
     this.round = 0;
-    this.updateRound();
     this.winnerModal.hide();
+    this.getPlayers();
   }
 
-  getPlayers() {
-    this.players = [
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Luis",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
+  getPlayers(): void {
+    this.dataService.getPlayers().subscribe({
+      next: (playersResponse: { data: PlayerInterface[] }) => {
+        this.players = [...playersResponse.data];
+        this.shufflePlayers(this.players);
+        this.buildMatches();
+        this.updateRound();
       },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Fernanda",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
+      error: error => {
+        console.log(error);
       },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Walter",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Tato",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Chelsea",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Luis",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      /*{
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Fernanda",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Walter",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Tato",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Chelsea",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Luis",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Fernanda",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Walter",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Tato",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Fernanda",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      },
-      {
-        _id: "65145741e74181ba6d91d9f1",
-        name: "Walter",
-        nickname: "Luisanhello",
-        mediaId: "6514573be74181ba6d91d9ef",
-        createdAt: "2023-09-27T16:24:33.956Z",
-        updatedAt: "2023-09-27T16:24:33.956Z",
-        photo: {
-          _id: "6514573be74181ba6d91d9ef",
-          url: "../../assets/photo.jpg",
-          filename: "file-1695831867333.jpg",
-          createdAt: "2023-09-27T16:24:27.345Z",
-          updatedAt: "2023-09-27T16:24:27.345Z"
-        }
-      }*/
-    ];
+    });
   }
 
   shufflePlayers(array: PlayerInterface[]): void {
@@ -292,7 +61,9 @@ export class MatchesComponent {
     for (let i = 0; i < playerSize; i += 2) {
       if (playerSize % 2 !== 0 && i + 2 > playerSize) {
         // Add one extra player to the last match
-        this.matches[this.matches.length - 1].push(this.players[i]);
+        if (playerSize > 1) {
+          this.matches[this.matches.length - 1].push(this.players[i]);
+        }
       } else {
         this.matches.push([
           this.players[i],
