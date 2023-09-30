@@ -9,6 +9,7 @@ import PlayerInterface from '../interfaces/player.interface';
 })
 export class PlayersComponent {
   players: PlayerInterface[] = [];
+  isLoading: boolean = false;
 
   constructor(private dataService: DataService) { }
 
@@ -17,12 +18,15 @@ export class PlayersComponent {
   }
 
   getPlayers(): void {
+    this.isLoading = true;
     this.dataService.getPlayers().subscribe({
       next: (playersResponse: { data: PlayerInterface[] }) => {
         this.players = [...playersResponse.data];
+        this.isLoading = false;
       },
       error: error => {
         console.log(error);
+        this.isLoading = false;
       },
     });
   }

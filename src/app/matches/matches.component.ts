@@ -15,6 +15,7 @@ export class MatchesComponent {
   roundMessage: string = "";
   isLastRound: boolean = false;
   players: PlayerInterface[] = [];
+  isLoading: boolean = false;
   private round: number = 0;
   private winnerModal: any;
 
@@ -35,15 +36,18 @@ export class MatchesComponent {
   }
 
   getPlayers(): void {
+    this.isLoading = true;
     this.dataService.getPlayers().subscribe({
       next: (playersResponse: { data: PlayerInterface[] }) => {
         this.players = [...playersResponse.data];
         this.shufflePlayers(this.players);
         this.buildMatches();
         this.updateRound();
+        this.isLoading = false;
       },
       error: error => {
         console.log(error);
+        this.isLoading = false;
       },
     });
   }

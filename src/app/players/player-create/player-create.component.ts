@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { DataService } from 'src/app/data.service';
 import BasicPlayerInterface from 'src/app/interfaces/basic-player.interface';
@@ -18,10 +18,19 @@ const enum ActionMode {
 })
 export class PlayerCreateComponent {
   playerForm: FormGroup;
+  mode: string = ActionMode.CREATE;
+  isLoading: boolean = false;
   private fileHolder: File | undefined;
-  private mode: string = ActionMode.CREATE;
   private playerId: string = "";
   private mediaId: string = "";
+
+  get name(): AbstractControl {
+    return this.playerForm.get("name")!;
+  }
+
+  get file(): AbstractControl {
+    return this.playerForm.get("filename")!;
+  }
 
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private dataService: DataService) {
     this.playerForm = this.formBuilder.group({
@@ -34,6 +43,7 @@ export class PlayerCreateComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       if (params.has("playerId")) {
+        this.isLoading = true;
         this.mode = ActionMode.EDIT;
         this.playerId = <string>params.get("playerId");
         this.dataService.getPlayer(this.playerId).subscribe({
@@ -45,9 +55,11 @@ export class PlayerCreateComponent {
             });
 
             this.mediaId = playerResponse.data.mediaId;
+            this.isLoading = false;
           },
           error: error => {
             console.log(error);
+            this.isLoading = false;
           }
         })
       }
@@ -73,6 +85,9 @@ export class PlayerCreateComponent {
           });
         }
       }
+    } else {
+      this.name.markAllAsTouched();
+      this.file.markAllAsTouched();
     }
   }
 

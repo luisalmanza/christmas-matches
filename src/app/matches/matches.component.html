@@ -1,14 +1,22 @@
 <div class="container pt-5 mb-5">
 
-    <div class="d-flex justify-content-center">
-        <button type="button" class="btn btn-outline-light btn-lg mt-5" (click)="newGame()">Start new game</button>
+    <div *ngIf="isLoading; else newGameTemplate" class="d-flex justify-content-center mt-5">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
     </div>
 
-    <div *ngIf="players.length > 1; else register" class="round mt-5">
+    <ng-template #newGameTemplate>
+        <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-outline-light btn-lg mt-5" (click)="newGame()">Start new game</button>
+        </div>
+    </ng-template>
+
+    <div *ngIf="players.length > 1; else registerTemplate" class="round mt-5">
         <span class="font-monospace">{{roundMessage}}</span>
     </div>
 
-    <ng-template #register>
+    <ng-template #registerTemplate>
         <span class="text-white text-center d-flex justify-content-center mt-5">
             Please register at least 2 players
         </span>
