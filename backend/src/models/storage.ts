@@ -2,7 +2,7 @@ import { Model, Schema, model } from "mongoose";
 import mongooseDelete, { SoftDeleteModel } from "mongoose-delete";
 import StorageInterface from "../interfaces/storage.interface";
 
-const StorageSchema = new Schema<any>(
+const StorageSchema = new Schema<StorageInterface>(
     {
         url: {
             type: String

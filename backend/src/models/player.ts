@@ -21,7 +21,7 @@ const PlayerSchema = new Schema<PlayerInterface>(
 );
 
 PlayerSchema.static("findAllData", function findAllData() {
-    const joinData: any = this.aggregate([
+    return this.aggregate([
         {
             $lookup: {
                 from: "storages",
@@ -49,12 +49,10 @@ PlayerSchema.static("findAllData", function findAllData() {
             }
         }
     ]);
-
-    return joinData;
 });
 
 PlayerSchema.static("findOneItem", function findOneItem(id) {
-    const joinData: any = this.aggregate([
+    return this.aggregate([
         {
             $match: {
                 _id: new mongoose.Types.ObjectId(id)
@@ -71,9 +69,7 @@ PlayerSchema.static("findOneItem", function findOneItem(id) {
         {
             $unwind: "$photo"
         }
-    ]);
-
-    return joinData;
+    ])
 });
 
 PlayerSchema.plugin(mongooseDelete, { overrideMethods: "all" });

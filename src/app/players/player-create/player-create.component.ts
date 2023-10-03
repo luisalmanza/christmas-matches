@@ -152,9 +152,9 @@ export class PlayerCreateComponent {
     })
   }
 
-  onFileSelected(event: any) {
-    const inputFile = event.target;
-    if (inputFile.files.length > 0) {
+  onFileSelected(event: Event) {
+    const inputFile = event.target as HTMLInputElement;
+    if (inputFile.files && inputFile.files?.length > 0) {
       this.fileHolder = inputFile.files[0];
       this.playerForm.patchValue({
         filename: this.fileHolder?.name
