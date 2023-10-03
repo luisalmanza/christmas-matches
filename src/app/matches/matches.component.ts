@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import PlayerInterface from '../interfaces/player.interface';
+import PlayerInterface from '../shared/interfaces/player.interface';
 import * as bootstrap from 'bootstrap';
 import { DataService } from '../data.service';
 
@@ -17,12 +17,14 @@ export class MatchesComponent {
   players: PlayerInterface[] = [];
   isLoading: boolean = false;
   private round: number = 0;
-  private winnerModal: any;
+  private winnerModal: bootstrap.Modal | undefined;
+  private errorModal: bootstrap.Modal | undefined;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.winnerModal = new bootstrap.Modal('#winnerModal');
+    this.errorModal = new bootstrap.Modal('#errorModal');
     this.newGame();
   }
 
@@ -31,7 +33,7 @@ export class MatchesComponent {
     this.playedCounter = 0;
     this.isLastRound = false;
     this.round = 0;
-    this.winnerModal.hide();
+    this.winnerModal?.hide();
     this.getPlayers();
   }
 
@@ -48,6 +50,7 @@ export class MatchesComponent {
       error: error => {
         console.log(error);
         this.isLoading = false;
+        this.errorModal?.show();
       },
     });
   }
@@ -98,7 +101,7 @@ export class MatchesComponent {
     }
 
     if (this.playedCounter === this.matches.length && this.isLastRound) {
-      this.winnerModal.show();
+      this.winnerModal?.show();
       this.winnerPlayer = this.matches[matchIndex][playerIndex];
     }
   }

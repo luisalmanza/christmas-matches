@@ -7,13 +7,5 @@ import { NavigationEnd, Router } from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  route: string = "";
-
-  constructor(private router: Router) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.route = event.url;
-      }
-    });
-  }
+ 
 }

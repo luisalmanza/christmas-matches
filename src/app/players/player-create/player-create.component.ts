@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DataService } from 'src/app/data.service';
-import BasicPlayerInterface from 'src/app/interfaces/basic-player.interface';
-import PhotoInterface from 'src/app/interfaces/photo.interface';
-import PlayerInterface from 'src/app/interfaces/player.interface';
+import BasicPlayerInterface from 'src/app/shared/interfaces/basic-player.interface';
+import PhotoInterface from 'src/app/shared/interfaces/photo.interface';
+import PlayerInterface from 'src/app/shared/interfaces/player.interface';
+import * as bootstrap from 'bootstrap';
 
 const enum ActionMode {
   CREATE = "CREATE",
@@ -23,6 +24,8 @@ export class PlayerCreateComponent {
   private fileHolder: File | undefined;
   private playerId: string = "";
   private mediaId: string = "";
+  private saveToast: bootstrap.Toast | undefined;
+  private errorModal: bootstrap.Modal | undefined;
 
   get name(): AbstractControl {
     return this.playerForm.get("name")!;
@@ -32,7 +35,7 @@ export class PlayerCreateComponent {
     return this.playerForm.get("filename")!;
   }
 
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private dataService: DataService) {
+  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private dataService: DataService, private router: Router) {
     this.playerForm = this.formBuilder.group({
       name: ["", [Validators.required]],
       nickname: [""],
@@ -41,6 +44,9 @@ export class PlayerCreateComponent {
   }
 
   ngOnInit(): void {
+    this.saveToast = bootstrap.Toast.getOrCreateInstance("#saveToast");
+    this.errorModal = new bootstrap.Modal('#errorModal');
+
     this.route.paramMap.subscribe(params => {
       if (params.has("playerId")) {
         this.isLoading = true;
@@ -60,6 +66,8 @@ export class PlayerCreateComponent {
           error: error => {
             console.log(error);
             this.isLoading = false;
+            this.playerForm.disable();
+            this.errorModal?.show();
           }
         })
       }
@@ -92,28 +100,39 @@ export class PlayerCreateComponent {
   }
 
   editPlayer(formData: BasicPlayerInterface): void {
+    this.isLoading = true;
     this.dataService.editPlayer(this.playerId, formData).subscribe({
       next: playerResponse => {
-        console.log("Player edited", playerResponse);
+        this.saveToast?.show();
+        this.isLoading = false;
+        this.router.navigate(["/players"]);
       },
       error: error => {
         console.log(error);
+        this.isLoading = false;
+        this.errorModal?.show();
       }
     })
   }
 
   addPlayer(formData: BasicPlayerInterface): void {
+    this.isLoading = true;
     this.dataService.addPlayer(formData).subscribe({
       next: playerResponse => {
-        console.log("Player saved", playerResponse);
+        this.saveToast?.show();
+        this.isLoading = false;
+        this.router.navigate(["/players"]);
       },
       error: error => {
         console.log(error);
+        this.isLoading = false;
+        this.errorModal?.show();
       }
     })
   }
 
   uploadFile(callback: (formData: BasicPlayerInterface) => void): void {
+    this.isLoading = true;
     let formData = new FormData();
     formData.append("file", <File>this.fileHolder)
     this.dataService.uploadFile(formData).subscribe({
@@ -127,6 +146,8 @@ export class PlayerCreateComponent {
       },
       error: error => {
         console.log(error);
+        this.isLoading = false;
+        this.errorModal?.show();
       }
     })
   }
