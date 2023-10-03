@@ -1,3 +1,9 @@
 th {
     background-color: #5b2020;
 }
+
+@media (max-width: 480px) {
+    .aux-text {
+        display: none;
+    }
+}

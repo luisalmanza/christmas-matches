@@ -24,7 +24,7 @@
                 <ng-container *ngIf="match[2]">vs {{match[2].name}}</ng-container>
             </div>
             <div class="card-body">
-                <div class="d-flex justify-content-center align-items-center">
+                <div class="battle d-flex justify-content-center align-items-center">
                     <img class="picture rounded-circle" [src]="match[0].photo.url" alt="Player picture"
                         (click)="win(matchIndex, 0)" [ngClass]="{'looser': match[0].looser}">
                     <img class="versus" src="../../assets/vs.png" alt="">
