@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { DataService } from '../data.service';
+import { DataService } from '../shared/services/data/data.service';
 import PlayerInterface from '../shared/interfaces/player.interface';
-import * as bootstrap from 'bootstrap';
+import { Modal, Toast } from 'bootstrap';
 
 @Component({
   selector: 'app-players',
@@ -12,17 +12,14 @@ export class PlayersComponent {
   players: PlayerInterface[] = [];
   isLoading: boolean = false;
   deletingPlayer: PlayerInterface | undefined;
-  private deleteModal: bootstrap.Modal | undefined;
-  private deleteToast: bootstrap.Toast | undefined;
-  private errorModal: bootstrap.Modal | undefined;
+  private deleteModal: Modal | undefined;
+  private deleteToast: Toast | undefined;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.deleteModal = new bootstrap.Modal('#deleteModal');
-    this.deleteToast = bootstrap.Toast.getOrCreateInstance("#deleteToast");
-    this.errorModal = new bootstrap.Modal('#errorModal');
-
+    this.deleteModal = new Modal('#deleteModal');
+    this.deleteToast = new Toast("#deleteToast");
     this.getPlayers();
   }
 
@@ -36,7 +33,7 @@ export class PlayersComponent {
       error: error => {
         console.log(error);
         this.isLoading = false;
-        this.errorModal?.show();
+        new Modal('#errorModal').show();
       },
     });
   }
@@ -60,7 +57,7 @@ export class PlayersComponent {
         console.log(error);
         this.isLoading = false;
         this.deleteModal?.hide();
-        this.errorModal?.show();
+        new Modal('#errorModal').show();
       },
     });
   }

@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DataService } from 'src/app/data.service';
+import { DataService } from '../../shared/services/data/data.service';
 import BasicPlayerInterface from 'src/app/shared/interfaces/basic-player.interface';
 import PhotoInterface from 'src/app/shared/interfaces/photo.interface';
 import PlayerInterface from 'src/app/shared/interfaces/player.interface';
-import * as bootstrap from 'bootstrap';
+import { Modal, Toast } from 'bootstrap';
 
 const enum ActionMode {
   CREATE = "CREATE",
@@ -25,7 +25,6 @@ export class PlayerCreateComponent {
   private playerId: string = "";
   private mediaId: string = "";
   private saveToast: bootstrap.Toast | undefined;
-  private errorModal: bootstrap.Modal | undefined;
 
   get name(): AbstractControl {
     return this.playerForm.get("name")!;
@@ -44,8 +43,7 @@ export class PlayerCreateComponent {
   }
 
   ngOnInit(): void {
-    this.saveToast = bootstrap.Toast.getOrCreateInstance("#saveToast");
-    this.errorModal = new bootstrap.Modal('#errorModal');
+    this.saveToast = new Toast("#saveToast");
 
     this.route.paramMap.subscribe(params => {
       if (params.has("playerId")) {
@@ -67,11 +65,11 @@ export class PlayerCreateComponent {
             console.log(error);
             this.isLoading = false;
             this.playerForm.disable();
-            this.errorModal?.show();
+            new Modal('#errorModal').show();
           }
         })
       }
-    })
+    });
   }
 
   submitForm() {
@@ -110,7 +108,7 @@ export class PlayerCreateComponent {
       error: error => {
         console.log(error);
         this.isLoading = false;
-        this.errorModal?.show();
+        new Modal('#errorModal').show();
       }
     })
   }
@@ -126,7 +124,7 @@ export class PlayerCreateComponent {
       error: error => {
         console.log(error);
         this.isLoading = false;
-        this.errorModal?.show();
+        new Modal('#errorModal').show();
       }
     })
   }
@@ -147,7 +145,7 @@ export class PlayerCreateComponent {
       error: error => {
         console.log(error);
         this.isLoading = false;
-        this.errorModal?.show();
+        new Modal('#errorModal').show();
       }
     })
   }

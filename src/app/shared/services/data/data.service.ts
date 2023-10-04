@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
-import PlayerInterface from './shared/interfaces/player.interface';
-import { environment } from 'src/environments/environment.development';
+import PlayerInterface from '../../interfaces/player.interface';
+import { environment } from '../../../../environments/environment.development';
 import { Observable } from 'rxjs';
-import PhotoInterface from './shared/interfaces/photo.interface';
-import BasicPlayerInterface from './shared/interfaces/basic-player.interface';
+import PhotoInterface from '../../interfaces/photo.interface';
+import BasicPlayerInterface from '../../interfaces/basic-player.interface';
 
 const BACKEND_URL = environment.apiUrl;
 

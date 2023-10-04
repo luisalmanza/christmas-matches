@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import PlayerInterface from '../shared/interfaces/player.interface';
-import * as bootstrap from 'bootstrap';
-import { DataService } from '../data.service';
+import { Modal } from 'bootstrap';
+import { DataService } from '../shared/services/data/data.service';
 
 @Component({
   selector: 'app-matches',
@@ -16,15 +16,13 @@ export class MatchesComponent {
   isLastRound: boolean = false;
   players: PlayerInterface[] = [];
   isLoading: boolean = false;
-  private round: number = 0;
-  private winnerModal: bootstrap.Modal | undefined;
-  private errorModal: bootstrap.Modal | undefined;
+  winnerModal: Modal | undefined;
+  round: number = 0;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
-    this.winnerModal = new bootstrap.Modal('#winnerModal');
-    this.errorModal = new bootstrap.Modal('#errorModal');
+    this.winnerModal = new Modal('#winnerModal');
     this.newGame();
   }
 
@@ -50,7 +48,7 @@ export class MatchesComponent {
       error: error => {
         console.log(error);
         this.isLoading = false;
-        this.errorModal?.show();
+        new Modal('#errorModal').show();
       },
     });
   }
