@@ -21,10 +21,9 @@ export class PlayerCreateComponent {
   playerForm: FormGroup;
   mode: string = ActionMode.CREATE;
   isLoading: boolean = false;
-  private fileHolder: File | undefined;
+  fileHolder: File | undefined;  
   private playerId: string = "";
   private mediaId: string = "";
-  private saveToast: bootstrap.Toast | undefined;
 
   get name(): AbstractControl {
     return this.playerForm.get("name")!;
@@ -43,8 +42,6 @@ export class PlayerCreateComponent {
   }
 
   ngOnInit(): void {
-    this.saveToast = new Toast("#saveToast");
-
     this.route.paramMap.subscribe(params => {
       if (params.has("playerId")) {
         this.isLoading = true;
@@ -101,7 +98,7 @@ export class PlayerCreateComponent {
     this.isLoading = true;
     this.dataService.editPlayer(this.playerId, formData).subscribe({
       next: playerResponse => {
-        this.saveToast?.show();
+        new Toast("#saveToast").show();
         this.isLoading = false;
         this.router.navigate(["/players"]);
       },
@@ -117,7 +114,7 @@ export class PlayerCreateComponent {
     this.isLoading = true;
     this.dataService.addPlayer(formData).subscribe({
       next: playerResponse => {
-        this.saveToast?.show();
+        new Toast("#saveToast").show();
         this.isLoading = false;
         this.router.navigate(["/players"]);
       },

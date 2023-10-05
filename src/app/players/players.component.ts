@@ -13,13 +13,11 @@ export class PlayersComponent {
   isLoading: boolean = false;
   deletingPlayer: PlayerInterface | undefined;
   private deleteModal: Modal | undefined;
-  private deleteToast: Toast | undefined;
 
   constructor(private dataService: DataService) { }
 
   ngOnInit(): void {
     this.deleteModal = new Modal('#deleteModal');
-    this.deleteToast = new Toast("#deleteToast");
     this.getPlayers();
   }
 
@@ -50,7 +48,7 @@ export class PlayersComponent {
       next: (playersResponse: { data: {} }) => {
         this.deletingPlayer = undefined;
         this.deleteModal?.hide();
-        this.deleteToast?.show();
+        new Toast("#deleteToast").show();
         this.getPlayers();
       },
       error: error => {

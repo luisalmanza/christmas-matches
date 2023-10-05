@@ -3,7 +3,7 @@ import { MatchesComponent } from './matches.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { LoadingComponent } from '../shared/components/loading/loading.component';
 import { DataService } from '../shared/services/data/data.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import { mockSinglePlayer, mockTwoPlayers } from '../shared/mocks/mock-players';
 import PlayerInterface from '../shared/interfaces/player.interface';
 
@@ -30,7 +30,7 @@ describe('MatchesComponent', () => {
 
   beforeEach(() => {
     singlePlayerData = JSON.parse(JSON.stringify(mockSinglePlayer));
-    twoPlayersData = JSON.parse(JSON.stringify(mockTwoPlayers['data']));
+    twoPlayersData = JSON.parse(JSON.stringify(mockTwoPlayers));
   });
 
   it('should create', () => {
@@ -47,13 +47,25 @@ describe('MatchesComponent', () => {
   });
 
   it('should call getPlayers and update properties when newGame is called', () => {
-    const mockData = { data: [{ ...singlePlayerData }] }
+    const mockData = { data: [{ ...singlePlayerData }] };
     jest.spyOn(dataService, 'getPlayers').mockReturnValue(of({ ...mockData }));
     component.newGame();
 
     expect(dataService.getPlayers).toHaveBeenCalled();
     expect(component.isLoading).toBe(false);
     expect(component.players).toEqual(mockData.data);
+  });
+
+  it('should handle errors if getPlayers when newGame is called', () => {
+    const error: Error = new Error('Error message');
+    const getPlayersSpy = jest.spyOn(dataService, 'getPlayers').mockReturnValue(throwError(() => error));
+    const consoleErrorSpy = jest.spyOn(console, 'log');
+
+    component.newGame();
+
+    expect(getPlayersSpy).toHaveBeenCalled();
+    expect(consoleErrorSpy).toHaveBeenCalledWith(error);
+    expect(component.isLoading).toBe(false);
   });
 
   it('should update game information after a win', () => {
@@ -87,7 +99,7 @@ describe('MatchesComponent', () => {
     component.players = [...mockData.data];
     component.buildMatches();
     component.updateRound();
-    const matchesSize = component.matches.length;
+    const matchesSize: number = component.matches.length;
 
     for (let i = 0; i < matchesSize; i++) {
       component.win(i, 0);
