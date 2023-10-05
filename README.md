@@ -8,7 +8,7 @@ This is planned especially for the Christmas games.
 
 ## Frontend Technologies
 
-Angular 16, TypeScript, HTML, SCSS and Bootstrap.
+Angular 16, TypeScript, HTML, SCSS, Bootstrap and Jest.
 
 ## Backend Technologies
 
