@@ -4,7 +4,7 @@ This is a project where you can create random matches with your friends and fami
 
 You can register all the players in the app.
 
-This is planned especially for the Christmas games.
+This is planned especially for Christmas games.
 
 ## Frontend Technologies
 

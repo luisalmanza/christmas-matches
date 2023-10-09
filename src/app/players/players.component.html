@@ -10,7 +10,7 @@
         </div>
     </ng-template>
 
-    <div class="col-md-8 offset-md-2" *ngIf="players.length > 0">
+    <div class="col-md-8 offset-md-2" *ngIf="players.length > 0; else noPlayersTemplate">
         <table class="table table-striped table-hover mt-5">
             <thead class="table-dark">
                 <tr>
@@ -33,6 +33,12 @@
             </tbody>
         </table>
     </div>
+
+    <ng-template #noPlayersTemplate>
+        <span class="text-white text-center d-flex justify-content-center mt-5">
+            There are no registered players yet
+        </span>
+    </ng-template>
 </div>
 
 <!-- Delete modal -->
