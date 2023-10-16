@@ -89,8 +89,8 @@ export class PlayerCreateComponent {
         }
       }
     } else {
-      this.name.markAllAsTouched();
-      this.file.markAllAsTouched();
+      this.name.markAsTouched();
+      this.file.markAsTouched();
     }
   }
 

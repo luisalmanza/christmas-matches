@@ -12,8 +12,8 @@
                     <label for="name" class="form-label form-text">Name</label>
                     <input type="text" id="name" class="form-control"
                         [ngClass]="{'is-invalid': name.invalid && name.touched}" formControlName="name">
-                    <div *ngIf="name.invalid" class="invalid-feedback">
-                        Please write a name.
+                    <div class="invalid-feedback">
+                        Please enter your name.
                     </div>
                 </div>
 

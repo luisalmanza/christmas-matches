@@ -26,7 +26,7 @@ app.use("/api", routes);
 
 if (NODE_ENV !== "test") {
     app.listen(port, () => {
-        console.log(`Ready in the port ${port}`);
+        console.log(`Listening in port ${port}`);
     });
 
     dbConnect().then(() => {
