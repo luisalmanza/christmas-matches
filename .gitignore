@@ -46,4 +46,5 @@ backend/node_modules/
 backend/.env
 backend/dist/
 backend/src/storage/*
+!/backend/src/storage/.gitkeep
 backend/coverage
